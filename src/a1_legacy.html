@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>指令卡 A1 未来一周空气质量</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* 布局：左侧固定步骤导航 + 右侧五步正文；像一张值班台上的作业卡，自上而下照做 */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --sunk:#f6f8fa; --ink:#14202b; --ink2:#52616f; --ink3:#8593a0; --line:#dfe5ea; --line2:#c9d2da;
+  --accent:#0e5f7f; --accent-ink:#ffffff; --accent-soft:#e6f1f5;
+  --good:#0a7d3c; --bad:#c2271d; --warn-bg:#fff8e1; --warn-line:#e0a800;
+  --display:"Noto Serif SC","Songti SC","SimSun",serif;
+  --font:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+  --shadow:0 1px 2px rgba(20,32,43,.05),0 6px 20px rgba(20,32,43,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark;
+    --bg:#0e1419; --surface:#161f27; --sunk:#111920; --ink:#e9eef2; --ink2:#a9b6c1; --ink3:#73828f; --line:#26333e; --line2:#34434f;
+    --accent:#63bfdc; --accent-ink:#06202b; --accent-soft:#132c37;
+    --good:#4ccb84; --bad:#ff7b70; --warn-bg:#2d260d; --warn-line:#e0a800; --shadow:none; }
+}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --bg:#0e1419; --surface:#161f27; --sunk:#111920; --ink:#e9eef2; --ink2:#a9b6c1; --ink3:#73828f; --line:#26333e; --line2:#34434f;
+  --accent:#63bfdc; --accent-ink:#06202b; --accent-soft:#132c37;
+  --good:#4ccb84; --bad:#ff7b70; --warn-bg:#2d260d; --warn-line:#e0a800; --shadow:none; }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:32px 20px 72px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px}
+/* 导航 */
+nav{position:sticky;top:20px;align-self:start;display:flex;flex-direction:column;gap:18px}
+.cardid{background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:14px 16px}
+.cardid .k{font-size:12px;opacity:.8;letter-spacing:.08em}
+.cardid .v{font:900 34px/1.1 var(--display)}
+.cardid .s{font-size:12.5px;opacity:.9;margin-top:4px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.steps a{display:flex;gap:10px;align-items:center;padding:7px 10px;border-radius:7px;color:var(--ink2);text-decoration:none;font-size:14px}
+.steps a:hover{background:var(--surface);color:var(--ink)}
+.steps a:focus-visible,button:focus-visible{outline:3px solid var(--warn-line);outline-offset:2px}
+.steps i{font:500 12px/22px var(--mono);font-style:normal;width:22px;height:22px;border-radius:50%;border:1px solid var(--line2);text-align:center;flex:none;background:var(--surface)}
+.meta{font-size:12.5px;color:var(--ink2);border-top:1px solid var(--line2);padding-top:14px;display:grid;grid-template-columns:auto 1fr;gap:4px 10px}
+.meta dt{color:var(--ink3)} .meta dd{margin:0}
+/* 正文 */
+main{display:flex;flex-direction:column;gap:20px;min-width:0}
+header{padding:4px 0 6px}
+.eyebrow{font-size:12.5px;color:var(--accent);font-weight:700;letter-spacing:.12em}
+h1{font:900 38px/1.25 var(--display);margin:8px 0 12px;text-wrap:balance;letter-spacing:.01em}
+header p{margin:0;color:var(--ink2);max-width:38em;font-size:16px}
+.notice{background:var(--warn-bg);border:1px solid var(--warn-line);border-left-width:5px;padding:12px 16px;border-radius:8px;font-size:13.5px;line-height:1.7}
+.notice b{display:block;font-size:14px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;scroll-margin-top:16px}
+.sh{display:flex;align-items:baseline;gap:14px;padding:18px 26px 14px;border-bottom:1px solid var(--line);background:linear-gradient(var(--sunk),var(--surface))}
+.sh .no{font:500 13px/1 var(--mono);color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:4px 7px;position:relative;top:-3px}
+h2{font:900 22px/1.3 var(--display);margin:0}
+.sh span.q{color:var(--ink2);font-size:13.5px;margin-left:auto}
+.sb{padding:22px 26px 26px;display:flex;flex-direction:column;gap:16px}
+h3{font-size:15px;margin:8px 0 0;display:flex;align-items:center;gap:8px}
+h3::before{content:"";width:4px;height:15px;background:var(--accent);border-radius:2px}
+p{margin:0;max-width:46em}
+ul,ol{margin:0;padding-left:1.25em;max-width:46em}
+li+li{margin-top:5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.box{background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.box h4{margin:0;font-size:12.5px;color:var(--ink3);font-weight:700;letter-spacing:.06em}
+.box .big{font:600 17px/1.4 var(--display)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+table.t th,table.t td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+table.t th{font-size:12.5px;color:var(--ink3);font-weight:700;letter-spacing:.04em;border-bottom:2px solid var(--line2);white-space:nowrap}
+table.t tr:last-child td{border-bottom:0}
+table.t td:first-child{font-weight:500}
+.pill{display:inline-block;font-size:12px;border-radius:999px;padding:1px 10px;font-weight:700;white-space:nowrap}
+.must{background:var(--accent);color:var(--accent-ink)}
+.opt{border:1px solid var(--line2);color:var(--ink2)}
+pre{margin:0;background:var(--sunk);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font:12.5px/1.75 var(--mono);white-space:pre-wrap;overflow-x:auto;color:var(--ink)}
+code{font:13px var(--mono);background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+figure{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+figure .fh{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;padding:11px 16px;background:var(--sunk);border-bottom:1px solid var(--line)}
+figure .fh b{font-size:14.5px}
+figure .fh .use{font-size:12.5px;color:var(--ink2)}
+figure .fh .who{margin-left:auto;font-size:12px;border:1px solid var(--line2);border-radius:999px;padding:0 9px;color:var(--ink2);white-space:nowrap}
+figure .fh .who.out{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+figure .fb{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.note{font-size:12.5px;color:var(--ink2)}
+/* 等级矩阵与结论表：沿用省站汇报版式，细黑边、小字、等级色块 */
+table.g{font-size:12.5px;font-variant-numeric:tabular-nums;border:1px solid var(--line2)}
+table.g th,table.g td{border:1px solid var(--line2);padding:5px 6px;text-align:center;white-space:nowrap}
+table.g th{background:var(--sunk);font-weight:700;color:var(--ink2)}
+table.g td.l{text-align:left;font-weight:500}
+table.g td.l small{display:block;color:var(--ink3);font-weight:400;font-family:var(--mono);font-size:11px}
+table.g td.c{font-weight:700;font-size:13.5px}
+table.g td.c small{display:block;font-size:10.5px;font-weight:500;line-height:1.2}
+table.g td.lv{font-weight:700}
+table.g td.na{color:var(--ink3);background:repeating-linear-gradient(135deg,transparent 0 7px,var(--line) 7px 8px)}
+table.g th.far,table.g td.far{opacity:.62}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;color:var(--ink2)}
+.sw{display:inline-block;width:22px;height:12px;border-radius:2px;vertical-align:-1px;margin-right:5px;border:1px solid rgba(0,0,0,.15)}
+svg text{font-family:var(--font);fill:var(--ink2);font-size:12px}
+.chartwrap{position:relative}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line2);border-radius:8px;padding:9px 12px;font-size:12.5px;line-height:1.65;box-shadow:0 6px 20px rgba(0,0,0,.18);display:none;white-space:nowrap;z-index:2}
+.tip b{color:var(--ink)}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rule{border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:13.5px}
+.rule b{display:block;font-size:13.5px;margin-bottom:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 12px/1 var(--mono);padding:5px 8px;border-radius:4px;border:1px solid rgba(0,0,0,.18)}
+button.copy{font:inherit;font-size:13px;font-weight:500;background:var(--accent);color:var(--accent-ink);border:0;border-radius:7px;padding:6px 16px;cursor:pointer}
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.check{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px}
+.check li{margin:0;display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+.check li::before{content:"";width:16px;height:16px;border:1.5px solid var(--line2);border-radius:4px;margin-top:5px;background:var(--surface)}
+.say{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 18px;background:var(--sunk);display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.85}
+.say p{max-width:none;text-indent:2em}
+.say .lab{font-size:12px;color:var(--ink3);font-weight:700;letter-spacing:.06em;text-indent:0}
+.bad{color:var(--bad);font-weight:700}.good{color:var(--good);font-weight:700}
+.slot{background:var(--accent-soft);border-radius:3px;padding:0 4px;color:var(--accent);font-weight:500;white-space:nowrap}
+.anat{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.anat div{padding:12px 14px;border-right:1px solid var(--line);font-size:13px}
+.anat div:last-child{border-right:0}
+.anat b{display:block;font-size:13.5px}.anat i{font:500 12px var(--mono);color:var(--accent);font-style:normal}
+.deck{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.slide{border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:var(--surface);display:flex;flex-direction:column}
+.slide .thumb{aspect-ratio:16/9;background:var(--sunk);border-bottom:1px solid var(--line);padding:8px 9px;display:flex;flex-direction:column;gap:4px}
+.slide .thumb .tt{font:700 10.5px/1.2 var(--font);color:var(--ink)}
+.slide .thumb .bars{flex:1;display:grid;gap:2px}
+.slide .thumb .bars i{display:block;border-radius:1px}
+.slide .cap{padding:8px 10px;font-size:12.5px;line-height:1.55;display:flex;flex-direction:column;gap:2px}
+.slide .cap b{font-size:13px}
+.slide .src{font:500 11px var(--mono);color:var(--accent)}
+.slide.ext .thumb{background:repeating-linear-gradient(135deg,var(--sunk) 0 8px,var(--surface) 8px 16px)}
+.slide.ext .src{color:var(--ink3)}
+.pg{font:500 11px var(--mono);color:var(--ink3)}
+.season{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.season .box{gap:8px}
+footer{font-size:12.5px;color:var(--ink3);padding:0 4px}
+@media (max-width:900px){.deck{grid-template-columns:1fr 1fr}.season{grid-template-columns:1fr}
+  .page{grid-template-columns:1fr;gap:16px;padding:20px 16px 56px}
+  nav{position:static;flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}
+  .cardid{padding:8px 14px}.cardid .v{font-size:22px}.cardid .k,.cardid .s,.meta{display:none}
+  .steps{flex-direction:row;flex-wrap:wrap}.steps a{padding:4px 8px;font-size:13px}
+  h1{font-size:28px}.two,.three,.rules{grid-template-columns:1fr}.anat{grid-template-columns:1fr 1fr}
+  .sh{padding:14px 18px 12px;flex-wrap:wrap}.sh span.q{margin-left:0;width:100%}.sb{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<nav aria-label="卡片导航">
+  <div class="cardid"><div class="k">预报会商指令卡</div><div class="v">A1</div><div class="s">常规趋势 · 入门</div></div>
+  <ol class="steps">
+    <li><a href="#step-1"><i>1</i>指令与意图</a></li>
+    <li><a href="#step-2"><i>2</i>必用数据</a></li>
+    <li><a href="#step-3"><i>3</i>标准图表</a></li>
+    <li><a href="#step-4"><i>4</i>AI 研判</a></li>
+    <li><a href="#step-5"><i>5</i>交付话术</a></li>
+  </ol>
+  <dl class="meta"><dt>适用</dt><dd>省级、地市级</dd><dt>读者</dt><dd>客户业务人员、驻场人员</dd><dt>标准</dt><dd>HJ 633—2026</dd><dt>版式</dt><dd>参照省站趋势预报汇报</dd><dt>状态</dt><dd>样稿第 3 版</dd></dl>
+</nav>
+
+<main>
+<header>
+  <div class="eyebrow">领导指令</div>
+  <h1>“未来一周空气质量怎么样？”</h1>
+  <p>无论您是专职、兼职还是驻场人员，照这张卡选数据、出图表、让 AI 起草研判，最后交出一份标准页序的会商汇报材料。</p>
+</header>
+
+<div class="notice"><b>样稿说明：图表由真实样例文件计算，但不是西安的数据</b>
+标准数据集中带逐日时间序列的预报文件只有站点 659004109 和 659004111 的 6 份，本页图表全部出自它们，用来展示版式和算法。四个数值模式的样例是单一时刻的网格文件，取不出逐日序列，因此没有进图。正式版需要一份西安市的导出数据。“昨日全省回顾”一表例外，用的是样例中陕西 12 个城市 2026 年 10 月 21 日的真实日均数据。</div>
+
+<section id="step-1"><div class="sh"><span class="no">01</span><h2>指令与意图</h2><span class="q">领导到底要什么</span></div><div class="sb">
+  <div class="two">
+    <div class="box"><h4>领导可能这样说</h4><ul><li>未来一周空气质量怎么样？</li><li>下周天气帮不帮忙，会不会有污染？</li><li>这几天的预报给我报一下。</li></ul></div>
+    <div class="box"><h4>他真正要的</h4><ul><li>哪几天好、哪几天差，有没有需要提前部署的污染过程。</li><li>变好或变差的原因，一句话能说清。</li><li>一段可以直接转述给上级的话。</li></ul></div>
+  </div>
+  <h3>您要交出的东西：一份会商汇报材料</h3>
+  <p>页序参照陕西省空气质量趋势预报汇报。先回顾，再讲形势，最后给结论。带编号的页由本卡产出，斜纹页由卡 A2 产出。</p>
+  <div class="deck">
+    <div class="slide"><div class="thumb"><span class="tt">近期空气质量与气象回顾</span><div class="bars" style="grid-template-columns:repeat(10,1fr)"><i style='background:#00e400'></i><i style='background:#ffff00'></i><i style='background:#ffff00'></i><i style='background:#ff7e00'></i><i style='background:#ffff00'></i><i style='background:#00e400'></i><i style='background:#ffff00'></i><i style='background:#ff7e00'></i><i style='background:#ff0000'></i><i style='background:#ffff00'></i></div></div><div class="cap"><span class="pg">第 1 页</span><b>近期回顾</b>本月以来各城市逐日刷色，配温度、风、湿度、降水。<span class="src">本卡 · 需近 30 天导出</span></div></div>
+    <div class="slide"><div class="thumb"><span class="tt">昨日我省空气质量回顾</span><div class="bars" style="grid-template-columns:2fr 1fr 1fr 1fr"><i style='background:var(--line)'></i><i style='background:#00e400'></i><i style='background:#00e400'></i><i style='background:var(--line)'></i><i style='background:var(--line)'></i><i style='background:#00e400'></i><i style='background:#00e400'></i><i style='background:var(--line)'></i><i style='background:var(--line)'></i><i style='background:#00e400'></i><i style='background:#00e400'></i><i style='background:var(--line)'></i></div></div><div class="cap"><span class="pg">第 2 页</span><b>昨日回顾</b>各城市六项浓度、AQI、首污，标出最高城市。<span class="src">本卡 · 图表〇</span></div></div>
+    <div class="slide ext"><div class="thumb"><span class="tt">500hPa 高度场 + 850hPa 风场 等</span></div><div class="cap"><span class="pg">第 3 至 6 页</span><b>天气形势</b>高空形势、地面气压场、24 小时变温、相对湿度 + 风场；有沙尘时加沙尘页。<span class="src">卡 A2</span></div></div>
+    <div class="slide"><div class="thumb"><span class="tt">未来七日空气质量预报结论</span><div class="bars" style="grid-template-columns:repeat(7,1fr)"><i style='background:#ff0000'></i><i style='background:#ffff00'></i><i style='background:#ffff00'></i><i style='background:#ff7e00'></i><i style='background:#ff7e00'></i><i style='background:#ff7e00'></i><i style='background:#ffff00'></i><i style='background:#ff0000'></i><i style='background:#ffff00'></i><i style='background:#ffff00'></i><i style='background:#ff7e00'></i><i style='background:#ff7e00'></i><i style='background:#ff7e00'></i><i style='background:#ffff00'></i></div></div><div class="cap"><span class="pg">最后一页</span><b>预报结论</b>分时段结论在上，分城市刷色表在下。<span class="src">本卡 · 图表三 + 第 5 步</span></div></div>
+  </div>
+  <p class="note">多模式对比图（图表一、二）不放进汇报，领导追问依据时再出示。</p>
+</div></section>
+
+<section id="step-2"><div class="sh"><span class="no">02</span><h2>必用数据</h2><span class="q">先看有没有，再决定能做到哪一步</span></div><div class="sb">
+  <div class="scroll"><table class="t">
+    <tr><th>数据</th><th>用来做什么</th><th>必选</th><th>您是否具备</th></tr>
+    <tr><td>多模式空气质量预报<br><span class="note">逐小时，未来 10 天，六项污染物</span></td><td>算出每个模式每天的 AQI、级别、首要污染物</td><td><span class="pill must">必选</span></td><td>基础版具备统计与集合模式；数值模式需已订购</td></tr>
+    <tr><td>空气质量实况<br><span class="note">本月以来城市日均、昨日日均、今天最新小时</span></td><td>写回顾页；核对起报当天模式是否偏高或偏低</td><td><span class="pill must">必选</span></td><td>基础版具备</td></tr>
+    <tr><td>气象实况<br><span class="note">自动气象站日均：温度、风速风向、相对湿度、降水</span></td><td>回顾页的气象部分</td><td><span class="pill opt">佐证</span></td><td>基础版具备</td></tr>
+    <tr><td>沙尘预报<br><span class="note">含沙尘的 PM10、PM2.5 及其中沙尘浓度</span></td><td>春季或上游有沙尘时，判断是否写沙尘过程</td><td><span class="pill opt">佐证</span></td><td>需加订</td></tr>
+    <tr><td>气象形势预报<br><span class="note">500hPa 高度场 + 850hPa 风场、地面气压场、24 小时变温、相对湿度 + 风场</span></td><td>写出每个时段“扩散条件”那半句话</td><td><span class="pill opt">佐证</span></td><td>需加订；做法见卡 A2</td></tr>
+    <tr><td>近 7 至 15 天各模式评估结果</td><td>判断今天该信哪个模式</td><td><span class="pill opt">佐证</span></td><td>见卡 C2</td></tr>
+  </table></div>
+  <p class="note">只有两项必选数据时，本卡仍然可以做完，但结论里“扩散条件”一句只能写“暂无气象资料支撑”，不能凭印象填写。</p>
+  <h3>交给 AI 的标准数据包</h3>
+  <p>每个模式一个文本文件，按样例文件的现有格式导出。第一列是时间（年月日时），其后依次是七项逐小时浓度，缺测一律写 -999。</p>
+<pre>time        PM25    PM10    CO     NO2     SO2    O3_1h   O3_8h
+2026102200  22.71   83.73   0.25   17.25   3.50   20.22   20.22
+2026102201  23.72   71.44   0.14   35.02   5.88   17.88   19.05
+……（每天 24 行，共 10 天）               CO 单位 mg/m³，其余 μg/m³</pre>
+  <p class="note">文件名带上模式名、起报时间和城市或站点编码，例如 <code>oef_2026102112_d03_659004111.txt</code>。</p>
+  <p>回顾用的实况另导出一张表，每行一个城市一天，至少包含：<code>monitordate</code>、<code>citycode</code>、<code>pm25_24h</code>、<code>pm10_24h</code>、<code>no2_24h</code>、<code>o3_8h_max</code>、<code>aqi</code>、<code>primary_pollutant</code>、<code>aqi_level</code>。字段名与样例文件 <code>t_sc_pollutant_c_day.xlsx</code> 一致。</p>
+</div></section>
+
+<section id="step-3"><div class="sh"><span class="no">03</span><h2>标准图表</h2><span class="q">前两张自己看，第三张交给领导</span></div><div class="sb">
+
+  <figure>
+    <div class="fh"><b>图表〇　昨日全省空气质量回顾</b><span class="use">真实数据：2026 年 10 月 21 日</span><span class="who out">交付件 · 第 2 页</span></div>
+    <div class="fb"><div class="scroll"><table class="g" id="rv"></table></div>
+    <div class="note">按关中、陕北、陕南分区，城市顺序固定。浓度单位 μg/m³。地市级只保留本市一行，并把各区县列在下面。第 1 页的“本月以来逐日刷色表”是同一套配色铺成城市 × 日期矩阵，样例只有一天数据，这里不再示范。</div></div>
+  </figure>
+
+  <figure>
+    <div class="fh"><b>图表一　多模式逐日 AQI 等级矩阵</b><span class="use">看各模式是否一致，哪天开始变化</span><span class="who">自用</span></div>
+    <div class="fb"><div class="scroll"><table class="g" id="mx"></table></div>
+    <div class="legend" id="lg"></div>
+    <div class="note">格内大字是 AQI，小字是首要污染物。第 8 至 10 天颜色减淡，只作趋势参考。</div></div>
+  </figure>
+
+  <figure>
+    <div class="fh"><b>图表二　多模式 AQI 分歧图</b><span class="use">色带越宽，当天结论越没把握</span><span class="who">自用</span></div>
+    <div class="fb"><div class="chartwrap"><svg id="ch" viewBox="0 0 880 300" width="100%" role="img" aria-label="多模式逐日 AQI 范围与中位数"></svg><div class="tip" id="tip"></div></div>
+    <div class="note">色带为各模式当天的最低到最高，粗线为中位数，细线为各模式。鼠标移到图上可看每个模式的数值。</div></div>
+  </figure>
+
+  <figure>
+    <div class="fh"><b>图表三　未来七日空气质量预报结论表</b><span class="use">版式与省站趋势预报汇报一致</span><span class="who out">交付件</span></div>
+    <div class="fb"><div class="scroll"><table class="g" id="fin"></table></div>
+    <div class="note">本表是按“各模式中位数上下各 10”自动生成的初稿，必须经人工订正后才能交出。范围跨两个级别时写作“优-良”“良-轻”，色块取较高一级的颜色。正式使用时每个城市一行，按关中、陕北、陕南分区。</div></div>
+  </figure>
+
+  <h3>画法规范（依据 HJ 633—2026）</h3>
+  <div class="chips" id="chips"></div>
+  <div class="rules">
+    <div class="rule"><b>配色只用标准色</b>六个级别的 RGB 值见上方色块，不要自行调色，也不要用渐变。</div>
+    <div class="rule"><b>日均口径</b>PM2.5、PM10、SO2、NO2、CO 取当日 24 小时平均；臭氧取当日 8 时至 24 时的 8 小时滑动平均最大值。</div>
+    <div class="rule"><b>先修约，再算指数</b>浓度按“四舍六入五成双”修约到整数，CO 保留 1 位；分指数和 AQI 一律向上进位取整。</div>
+    <div class="rule"><b>新标准的 PM2.5 分级更严</b>日均 35 对应 50，60 对应 100，115 对应 150。沿用旧版限值会把轻度污染误判成良。</div>
+    <div class="rule"><b>首要污染物</b>AQI 大于 50 才标注；并列最大时全部列出，写作“PM2.5,PM10”。</div>
+    <div class="rule"><b>臭氧季</b>首要污染物为 O3 时，结论表的“首污”列写 O3，并另附未来七日 O3 日最大 8 小时浓度范围刷色，按 O3 分指数定色。</div>
+    <div class="rule"><b>沙尘过程</b>受沙尘影响的日期在结论表中用级别色块照常标注，在首污后加注“沙尘”。沙尘造成的污染不适用重污染预警，可按沙尘扣除规定另行评价。</div>
+    <div class="rule"><b>缺测处理</b>值为 -999 的模式整行标“缺测”，不参与中位数和范围计算。本样例中的“动态择优”即是如此。</div>
+  </div>
+  <h3>常见画错的地方</h3>
+  <ul><li>把不同站点或不同起报时间的模式放进同一张矩阵比较。</li><li>结论表只写一个 AQI 数。预报应给范围，本卡带宽取 20。</li><li>级别只写文字不上色，或者上了色却不写文字。两者都要有，打印成黑白也能看懂。</li></ul>
+</div></section>
+
+<section id="step-4"><div class="sh"><span class="no">04</span><h2>AI 研判</h2><span class="q">把数据包和下面这段话一起交给任意一个大模型</span></div><div class="sb">
+  <pre id="prompt">你是一名省级环境空气质量预报员的助手。我会给你若干个模式的逐小时预报文件，格式为：第一列时间（年月日时），其后依次是 PM25、PM10、CO、NO2、SO2、O3_1h、O3_8h。CO 单位 mg/m³，其余 μg/m³。值为 -999 表示缺测。
+
+如果同时给了昨日各城市实况表，先写回顾：各区域以什么级别为主、AQI 区间、最高的城市、首要污染物。
+
+请严格按以下步骤处理，并展示每一步的结果：
+1. 逐个文件检查缺测。整份缺测的模式列出名称并剔除。
+2. 对每个模式、每个自然日计算日均浓度：PM25、PM10、SO2、NO2、CO 取 24 小时平均；臭氧取当日 8 时至 24 时 O3_8h 的最大值。浓度按四舍六入五成双修约到整数，CO 保留 1 位。
+3. 按 HJ 633—2026 表 3 的限值线性插值计算各项分指数，向上进位取整；AQI 取最大分指数；AQI 大于 50 时给出首要污染物。
+   限值（分指数 0/50/100/150/200/300/400/500 对应的浓度）：
+   PM25：0/35/60/115/150/250/350/500
+   PM10：0/50/120/250/350/420/500/600
+   SO2：0/50/150/475/800/1600/2100/2620
+   NO2：0/40/80/180/280/565/750/940
+   CO：0/2/4/14/24/36/48/60
+   O3_8h：0/100/160/215/265/800
+4. 输出“模式 × 日期”的 AQI 与首要污染物表。
+5. 逐日给出各模式的最小值、中位数、最大值，并标出最大值与最小值相差超过 50 的日期。
+6. 给出未来七日逐日预报初稿：AQI 范围（中位数上下各 10）、级别（跨级写作“良-轻”）、首要污染物。
+7. 把级别相同的相邻日期合并成时段，按下面的句式写预报结论，每个时段一句：
+   “×日至×日，【扩散条件：待预报员填写】。空气质量以（级别）为主；首要污染物主要为（污染物）。”
+   数据里没有气象信息，扩散条件一律保留为待填写，不要自行编写天气原因。
+   如果某时段首要污染物为 O3，把“扩散条件”改为“光化学条件：待预报员填写”。
+   如果 PM10 明显高于前后几天，且 PM2.5 与 PM10 的比值明显偏低，在该时段后注明“可能受沙尘影响，请人工核实”，不要自行判定为沙尘。
+8. 按会商汇报页序整理输出：回顾页要点、形势页（留空待填）、结论页（分时段结论加逐日刷色表）。
+
+要求：只依据我提供的数据；拿不准的地方直接说明；最后单列“需要人工复核的事项”。</pre>
+  <div class="bar"><button class="copy" id="cp" type="button">复制提示词</button><span class="note">限值已写进提示词，模型不需要自己去查标准。</span></div>
+
+  <h3>用本页样例数据，AI 应当给出这样的结果</h3>
+  <div class="say" id="aiout"></div>
+
+  <h3>必须人工复核的事项</h3>
+  <ul class="check">
+    <li>抽查任意一天的 AQI：用总站的计算工具或手算核对一格，确认 AI 用的是 2026 版限值。</li>
+    <li>模式分歧大的日期，中位数只是折中，不是判断。该信哪个模式，要结合近期评估结果（卡 C2）和天气形势（卡 A2）决定。</li>
+    <li>今天的实况与各模式起报值相比偏高还是偏低，后几天是否需要整体上调或下调。</li>
+    <li>补上 AI 看不到的信息：沙尘、秸秆焚烧、烟花爆竹、重大活动管控、周边城市的预警动向。</li>
+    <li>AI 标注“可能受沙尘影响”的日期，用沙尘预报、卫星云图或上游城市实况核实后再决定是否写入。</li>
+    <li>逐句检查结论里有没有数据包中不存在的说法，有就删掉。</li>
+  </ul>
+</div></section>
+
+<section id="step-5"><div class="sh"><span class="no">05</span><h2>交付话术</h2><span class="q">怎么向领导交差</span></div><div class="sb">
+  <h3>一段结论的四个部件</h3>
+  <div class="anat">
+    <div><i>①</i><b>时段</b>按扩散条件的转折切分，一周分 2 到 4 段。</div>
+    <div><i>②</i><b>形势与扩散条件</b>一个主导因素，加一个定性判断。</div>
+    <div><i>③</i><b>分区域的级别</b>先说重的区域，再说其余；可能更重的城市和日期单独点出。</div>
+    <div><i>④</i><b>首要污染物</b>每段结尾固定一句。</div>
+  </div>
+  <div class="say"><span class="lab">句式</span>
+    <p><span class="slot">×日至×日</span>，<span class="slot">主导天气因素</span>，扩散条件<span class="slot">较好／一般／转差／较差</span>。<span class="slot">区域甲</span>空气质量以<span class="slot">级别</span>为主，<span class="slot">部分城市</span><span class="slot">×日</span>可能出现<span class="slot">更高级别</span>；<span class="slot">区域乙</span>以<span class="slot">级别</span>为主。首要污染物主要为<span class="slot">污染物</span>。</p>
+  </div>
+
+  <h3>回顾页的写法（由图表〇的真实数据生成）</h3>
+  <div class="say" id="rvsay"></div>
+  <h3>结论页：省级范例</h3>
+  <div class="say"><span class="lab">陕西省　未来七日空气质量预报结论</span>
+    <p>13-14日，<span class="bad">偏南气流主导，扩散条件持续转差</span>。<span class="bad">关中地区中度污染为主，部分城市14日可能出现重度污染</span>；陕北、陕南地区以良至轻度污染为主。首要污染物主要为PM2.5。</p>
+    <p>15日，<span class="good">受午后降水影响，污染略有缓解</span>。关中地区以轻至中度污染为主；陕北、陕南以良为主。首要污染物主要为PM2.5和PM10。</p>
+    <p>16-19日，<span class="good">多冷空气活动，扩散条件较好</span>。空气质量以良为主。首要污染物主要为PM2.5和PM10。</p>
+  </div>
+  <h3>结论页：地市级范例</h3>
+  <div class="say"><span class="lab">西安市　未来七日空气质量预报结论（示例文字，非实际预报）</span>
+    <p>13-14日，<span class="bad">偏南气流主导，扩散条件持续转差</span>。<span class="bad">全市以中度污染为主，14日夜间可能出现短时重度污染</span>，主城区和北部区县相对较重。首要污染物为PM2.5。</p>
+    <p>15日，<span class="good">受午后降水影响，污染略有缓解</span>。全市以轻至中度污染为主。首要污染物为PM2.5。</p>
+    <p>16-19日，<span class="good">多冷空气活动，扩散条件较好</span>。全市以良为主。首要污染物为PM2.5和PM10。</p>
+  </div>
+  <h3>换季时的写法</h3>
+  <div class="season">
+    <div class="box"><h4>臭氧季（通常 5 至 9 月）</h4>
+      <ul><li>“扩散条件”换成“光化学条件”：气温、日照、湿度、是否受副高控制。</li><li>污染集中在午后，可写“午后至傍晚”这样的时段。</li><li>首要污染物写 O3，并附 O3 浓度范围刷色。</li></ul>
+      <div class="say"><span class="lab">示例文字，非实际预报</span><p>×日至×日，<span class="bad">受副热带高压控制，晴热少云，午后最高气温超过 35℃，光化学反应条件有利</span>。关中地区以良至轻度污染为主，<span class="bad">部分城市×日午后可能出现中度污染</span>；陕北、陕南以良为主。首要污染物主要为O3。</p></div>
+    </div>
+    <div class="box"><h4>沙尘过程（多见于春季，西北各省有沙尘会商机制）</h4>
+      <ul><li>写清沙尘的来向、影响区域和大致时段。</li><li>首要污染物写 PM10，说明沙尘过后空气质量会较快好转。</li><li>沙尘污染不适用重污染预警，不要据此建议启动预警。</li></ul>
+      <div class="say"><span class="lab">示例文字，非实际预报</span><p>×日午后至夜间，<span class="bad">受上游沙尘传输影响，陕北地区可能出现浮尘天气，关中北部局地受影响</span>。陕北以轻度至中度污染为主；关中、陕南以良为主。首要污染物主要为PM10。<span class="good">×日起冷空气过境，沙尘影响减弱</span>，空气质量将逐步好转。</p></div>
+    </div>
+  </div>
+
+  <p class="note">书面材料中，不利条件和较重污染用红色加粗，有利条件用绿色加粗，其余保持黑色。一段话里标色不超过两处。</p>
+
+  <h3>规范用词</h3>
+  <div class="scroll"><table class="t">
+    <tr><th>要表达的意思</th><th>规范写法</th><th>不要这样写</th></tr>
+    <tr><td>扩散条件的五档</td><td>较好、一般、有所转差、较差、持续转差</td><td>很好、不太行、比较糟糕</td></tr>
+    <tr><td>主导因素</td><td>受高空槽东移影响；受冷空气影响；转为高压后部；气压场较弱；偏南气流主导；受降水影响</td><td>天气不好；天气帮忙</td></tr>
+    <tr><td>一个级别</td><td>以良为主；以中度污染为主</td><td>AQI 大概一百多</td></tr>
+    <tr><td>跨两个级别</td><td>以良至轻度污染为主；以轻至中度污染为主</td><td>良或者轻度、中度都有可能</td></tr>
+    <tr><td>局部更重</td><td>局地可能出现轻度污染；部分城市×日可能出现重度污染；可能出现短时重度污染</td><td>个别地方会很差</td></tr>
+    <tr><td>首要污染物</td><td>首要污染物主要为PM2.5；主要为PM2.5或PM10</td><td>主要是颗粒物</td></tr>
+    <tr><td>臭氧季的条件</td><td>光化学反应条件有利；受副热带高压控制，晴热少云</td><td>太阳大、天太热</td></tr>
+    <tr><td>沙尘</td><td>受上游沙尘传输影响，可能出现浮尘天气；沙尘影响减弱</td><td>刮沙子了</td></tr>
+    <tr><td>把握不大</td><td>各模式对×日的判断分歧较大，将于×日会商后更新</td><td>应该、估计、差不多</td></tr>
+  </table></div>
+
+  <h3>由本页样例数据自动起草的结论</h3>
+  <div class="say" id="draft"></div>
+
+  <h3>领导常见追问</h3>
+  <div class="scroll"><table class="t">
+    <tr><th>追问</th><th>怎么答</th><th>依据</th></tr>
+    <tr><td>有多大把握？</td><td>前 3 天把握较大，第 4 至 7 天供参考，7 天以后只看趋势。各模式一致的日子把握更大。</td><td>图表二的色带宽度</td></tr>
+    <tr><td>哪天最差？</td><td>直接报日期、AQI 范围、级别和首要污染物。</td><td>图表三</td></tr>
+    <tr><td>为什么会变差？</td><td>只说一个主导因素，例如“转为高压后部，风小湿度大”。</td><td>卡 A2 的形势图</td></tr>
+    <tr><td>要不要启动预警？</td><td>先对照启动条件再回答，不凭感觉。</td><td>卡 B2</td></tr>
+    <tr><td>为什么和手机上的预报不一样？</td><td>我们用的是多模式并经人工订正，发布口径以本单位为准。</td><td>图表一</td></tr>
+  </table></div>
+</div></section>
+
+<footer>内部对照：本卡用到要素产品清单第 1、2、4、5、39、40 项，佐证数据为第 7 至 10 项。样例文件起报时间 2026-10-21 12 时。交付件版式参照《陕西省空气质量趋势预报》汇报材料。</footer>
+</main>
+</div>
+<script>
+const DATA=
+{"集合预报 OEF":{"station":"659004111","days":[{"d":"20261022","aqi":82,"prim":["PM10"],"conc":{"PM25":20.0,"PM10":94.0,"CO":0.3,"NO2":18.0,"SO2":5.0,"O3_8h":61.0}},{"d":"20261023","aqi":79,"prim":["PM10"],"conc":{"PM25":18.0,"PM10":90.0,"CO":0.3,"NO2":14.0,"SO2":3.0,"O3_8h":69.0}},{"d":"20261024","aqi":75,"prim":["PM10"],"conc":{"PM25":16.0,"PM10":85.0,"CO":0.2,"NO2":11.0,"SO2":3.0,"O3_8h":62.0}},{"d":"20261025","aqi":83,"prim":["PM10"],"conc":{"PM25":22.0,"PM10":96.0,"CO":0.3,"NO2":15.0,"SO2":4.0,"O3_8h":60.0}},{"d":"20261026","aqi":87,"prim":["PM10"],"conc":{"PM25":24.0,"PM10":101.0,"CO":0.3,"NO2":16.0,"SO2":4.0,"O3_8h":66.0}},{"d":"20261027","aqi":89,"prim":["PM10"],"conc":{"PM25":26.0,"PM10":104.0,"CO":0.3,"NO2":19.0,"SO2":5.0,"O3_8h":71.0}},{"d":"20261028","aqi":93,"prim":["PM10"],"conc":{"PM25":34.0,"PM10":109.0,"CO":0.3,"NO2":22.0,"SO2":6.0,"O3_8h":73.0}},{"d":"20261029","aqi":94,"prim":["PM10"],"conc":{"PM25":32.0,"PM10":111.0,"CO":0.3,"NO2":20.0,"SO2":6.0,"O3_8h":71.0}},{"d":"20261030","aqi":89,"prim":["PM10"],"conc":{"PM25":28.0,"PM10":104.0,"CO":0.3,"NO2":18.0,"SO2":5.0,"O3_8h":70.0}},{"d":"20261031","aqi":93,"prim":["PM10"],"conc":{"PM25":29.0,"PM10":109.0,"CO":0.3,"NO2":23.0,"SO2":6.0,"O3_8h":59.0}}]},"动态择优 OEF":{"station":"659004111","days":[{"d":"20261022","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261023","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261024","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261025","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261026","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261027","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261028","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261029","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261030","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}},{"d":"20261031","aqi":0,"prim":[],"conc":{"PM25":-999.0,"PM10":-999.0,"CO":-999.0,"NO2":-999.0,"SO2":-999.0,"O3_8h":-999.0}}]},"循环网络 RNN":{"station":"659004111","days":[{"d":"20261022","aqi":32,"prim":[],"conc":{"PM25":6.0,"PM10":12.0,"CO":0.3,"NO2":7.0,"SO2":6.0,"O3_8h":63.0}},{"d":"20261023","aqi":32,"prim":[],"conc":{"PM25":6.0,"PM10":9.0,"CO":0.4,"NO2":7.0,"SO2":5.0,"O3_8h":63.0}},{"d":"20261024","aqi":29,"prim":[],"conc":{"PM25":9.0,"PM10":15.0,"CO":0.5,"NO2":10.0,"SO2":5.0,"O3_8h":57.0}},{"d":"20261025","aqi":33,"prim":[],"conc":{"PM25":10.0,"PM10":16.0,"CO":0.6,"NO2":11.0,"SO2":6.0,"O3_8h":65.0}},{"d":"20261026","aqi":32,"prim":[],"conc":{"PM25":12.0,"PM10":18.0,"CO":0.7,"NO2":15.0,"SO2":6.0,"O3_8h":63.0}},{"d":"20261027","aqi":29,"prim":[],"conc":{"PM25":14.0,"PM10":23.0,"CO":0.7,"NO2":14.0,"SO2":6.0,"O3_8h":58.0}},{"d":"20261028","aqi":32,"prim":[],"conc":{"PM25":18.0,"PM10":29.0,"CO":0.9,"NO2":17.0,"SO2":6.0,"O3_8h":64.0}},{"d":"20261029","aqi":33,"prim":[],"conc":{"PM25":18.0,"PM10":32.0,"CO":0.8,"NO2":19.0,"SO2":7.0,"O3_8h":65.0}},{"d":"20261030","aqi":32,"prim":[],"conc":{"PM25":17.0,"PM10":28.0,"CO":0.7,"NO2":18.0,"SO2":6.0,"O3_8h":63.0}},{"d":"20261031","aqi":33,"prim":[],"conc":{"PM25":19.0,"PM10":33.0,"CO":0.8,"NO2":19.0,"SO2":6.0,"O3_8h":60.0}}]},"神经网络 DNN":{"station":"659004109","days":[{"d":"20261022","aqi":31,"prim":[],"conc":{"PM25":3.0,"PM10":31.0,"CO":0.4,"NO2":12.0,"SO2":10.0,"O3_8h":48.0}},{"d":"20261023","aqi":29,"prim":[],"conc":{"PM25":3.0,"PM10":16.0,"CO":0.3,"NO2":11.0,"SO2":13.0,"O3_8h":58.0}},{"d":"20261024","aqi":32,"prim":[],"conc":{"PM25":4.0,"PM10":32.0,"CO":0.5,"NO2":14.0,"SO2":8.0,"O3_8h":51.0}},{"d":"20261025","aqi":33,"prim":[],"conc":{"PM25":23.0,"PM10":32.0,"CO":0.6,"NO2":15.0,"SO2":7.0,"O3_8h":52.0}},{"d":"20261026","aqi":37,"prim":[],"conc":{"PM25":7.0,"PM10":35.0,"CO":0.8,"NO2":29.0,"SO2":8.0,"O3_8h":53.0}},{"d":"20261027","aqi":72,"prim":["PM10"],"conc":{"PM25":23.0,"PM10":80.0,"CO":1.0,"NO2":36.0,"SO2":10.0,"O3_8h":48.0}},{"d":"20261028","aqi":75,"prim":["PM10"],"conc":{"PM25":30.0,"PM10":85.0,"CO":1.2,"NO2":38.0,"SO2":8.0,"O3_8h":48.0}},{"d":"20261029","aqi":70,"prim":["PM10"],"conc":{"PM25":30.0,"PM10":78.0,"CO":1.1,"NO2":32.0,"SO2":10.0,"O3_8h":55.0}},{"d":"20261030","aqi":62,"prim":["PM10"],"conc":{"PM25":37.0,"PM10":66.0,"CO":0.9,"NO2":21.0,"SO2":6.0,"O3_8h":53.0}},{"d":"20261031","aqi":65,"prim":["PM10"],"conc":{"PM25":35.0,"PM10":70.0,"CO":1.0,"NO2":28.0,"SO2":8.0,"O3_8h":53.0}}]},"S2S":{"station":"659004109","days":[{"d":"20261022","aqi":29,"prim":[],"conc":{"PM25":14.0,"PM10":22.0,"CO":0.4,"NO2":11.0,"SO2":6.0,"O3_8h":57.0}},{"d":"20261023","aqi":33,"prim":[],"conc":{"PM25":16.0,"PM10":26.0,"CO":0.4,"NO2":12.0,"SO2":5.0,"O3_8h":65.0}},{"d":"20261024","aqi":37,"prim":[],"conc":{"PM25":23.0,"PM10":37.0,"CO":0.4,"NO2":11.0,"SO2":5.0,"O3_8h":61.0}},{"d":"20261025","aqi":33,"prim":[],"conc":{"PM25":20.0,"PM10":24.0,"CO":0.5,"NO2":18.0,"SO2":5.0,"O3_8h":65.0}},{"d":"20261026","aqi":31,"prim":[],"conc":{"PM25":20.0,"PM10":25.0,"CO":0.5,"NO2":20.0,"SO2":5.0,"O3_8h":61.0}},{"d":"20261027","aqi":40,"prim":[],"conc":{"PM25":28.0,"PM10":35.0,"CO":0.6,"NO2":30.0,"SO2":5.0,"O3_8h":37.0}},{"d":"20261028","aqi":40,"prim":[],"conc":{"PM25":26.0,"PM10":33.0,"CO":0.6,"NO2":32.0,"SO2":6.0,"O3_8h":40.0}},{"d":"20261029","aqi":37,"prim":[],"conc":{"PM25":24.0,"PM10":30.0,"CO":0.5,"NO2":29.0,"SO2":6.0,"O3_8h":44.0}},{"d":"20261030","aqi":29,"prim":[],"conc":{"PM25":20.0,"PM10":24.0,"CO":0.5,"NO2":15.0,"SO2":6.0,"O3_8h":46.0}},{"d":"20261031","aqi":30,"prim":[],"conc":{"PM25":21.0,"PM10":25.0,"CO":0.5,"NO2":21.0,"SO2":6.0,"O3_8h":44.0}}]},"XAIR":{"station":"659004109","days":[{"d":"20261022","aqi":57,"prim":["PM10"],"conc":{"PM25":25.0,"PM10":59.0,"CO":0.2,"NO2":5.0,"SO2":3.0,"O3_8h":42.0}},{"d":"20261023","aqi":36,"prim":[],"conc":{"PM25":25.0,"PM10":29.0,"CO":0.2,"NO2":9.0,"SO2":6.0,"O3_8h":42.0}},{"d":"20261024","aqi":29,"prim":[],"conc":{"PM25":20.0,"PM10":22.0,"CO":0.2,"NO2":8.0,"SO2":7.0,"O3_8h":53.0}},{"d":"20261025","aqi":39,"prim":[],"conc":{"PM25":21.0,"PM10":39.0,"CO":0.6,"NO2":15.0,"SO2":7.0,"O3_8h":67.0}},{"d":"20261026","aqi":50,"prim":[],"conc":{"PM25":20.0,"PM10":50.0,"CO":0.8,"NO2":21.0,"SO2":11.0,"O3_8h":63.0}},{"d":"20261027","aqi":59,"prim":["PM10"],"conc":{"PM25":23.0,"PM10":62.0,"CO":0.9,"NO2":25.0,"SO2":8.0,"O3_8h":51.0}},{"d":"20261028","aqi":68,"prim":["PM10"],"conc":{"PM25":32.0,"PM10":75.0,"CO":1.0,"NO2":26.0,"SO2":8.0,"O3_8h":61.0}},{"d":"20261029","aqi":65,"prim":["PM10"],"conc":{"PM25":26.0,"PM10":71.0,"CO":0.9,"NO2":28.0,"SO2":9.0,"O3_8h":60.0}},{"d":"20261030","aqi":44,"prim":[],"conc":{"PM25":24.0,"PM10":44.0,"CO":0.8,"NO2":20.0,"SO2":8.0,"O3_8h":55.0}},{"d":"20261031","aqi":58,"prim":["PM10"],"conc":{"PM25":27.0,"PM10":61.0,"CO":0.9,"NO2":25.0,"SO2":10.0,"O3_8h":58.0}}]}};
+const SX=[{"c": "610100", "n": "西安市", "pm25": 17, "pm10": 41, "no2": 24, "o3": 71, "aqi": 41, "p": "-", "lv": "优", "t": "0"}, {"c": "610200", "n": "铜川市", "pm25": 19, "pm10": 37, "no2": 17, "o3": 94, "aqi": 47, "p": "-", "lv": "优", "t": "0"}, {"c": "610300", "n": "宝鸡市", "pm25": 18, "pm10": 37, "no2": 21, "o3": 75, "aqi": 38, "p": "-", "lv": "优", "t": "0"}, {"c": "610400", "n": "咸阳市", "pm25": 20, "pm10": 42, "no2": 22, "o3": 77, "aqi": 42, "p": "-", "lv": "优", "t": "0"}, {"c": "610403", "n": "杨凌", "pm25": 21, "pm10": 38, "no2": 24, "o3": 71, "aqi": 38, "p": "-", "lv": "优", "t": "0"}, {"c": "610500", "n": "渭南市", "pm25": 18, "pm10": 44, "no2": 17, "o3": 81, "aqi": 44, "p": "-", "lv": "优", "t": "0"}, {"c": "610581", "n": "韩城", "pm25": 12, "pm10": 32, "no2": 13, "o3": 80, "aqi": 40, "p": "-", "lv": "优", "t": "0"}, {"c": "610600", "n": "延安市", "pm25": 14, "pm10": 34, "no2": 24, "o3": 70, "aqi": 35, "p": "-", "lv": "优", "t": "0"}, {"c": "610700", "n": "汉中市", "pm25": 16, "pm10": 33, "no2": 12, "o3": 63, "aqi": 33, "p": "-", "lv": "优", "t": "0"}, {"c": "610800", "n": "榆林市", "pm25": 11, "pm10": 26, "no2": 28, "o3": 74, "aqi": 37, "p": "-", "lv": "优", "t": "0"}, {"c": "610900", "n": "安康市", "pm25": 14, "pm10": 33, "no2": 12, "o3": 74, "aqi": 37, "p": "-", "lv": "优", "t": "0"}, {"c": "611000", "n": "商洛市", "pm25": 12, "pm10": 34, "no2": 17, "o3": 72, "aqi": 36, "p": "-", "lv": "优", "t": "0"}];
+const LV=[[50,"优","优","rgb(0,228,0)","#0c2a0c"],[100,"良","良","rgb(255,255,0)","#2b2a00"],[150,"轻度污染","轻","rgb(255,126,0)","#2a1400"],[200,"中度污染","中","rgb(255,0,0)","#fff"],[300,"重度污染","重","rgb(153,0,76)","#fff"],[500,"严重污染","严重","rgb(126,0,35)","#fff"]];
+const RGB=["0,228,0","255,255,0","255,126,0","255,0,0","153,0,76","126,0,35"];
+const PN={PM25:"PM2.5",PM10:"PM10",SO2:"SO2",NO2:"NO2",CO:"CO",O3_8h:"O3"};
+const lv=a=>LV.find(l=>a<=l[0])||LV[5];
+const names=Object.keys(DATA), days=DATA[names[0]].days.map(d=>d.d);
+const lab=d=>(+d.slice(4,6))+"/"+(+d.slice(6,8)), dd=d=>(+d.slice(6,8))+"日";
+const valid=n=>DATA[n].days[0].conc.PM25>=0;
+const vn=names.filter(valid), far=i=>i>=7?" far":"";
+const $=id=>document.getElementById(id);
+// 图表一
+let h="<tr><th>模式</th>"+days.map((d,i)=>"<th class='"+far(i)+"'>"+lab(d)+"<br><span style='font-weight:400'>第"+(i+1)+"天</span></th>").join("")+"</tr>";
+for(const n of names){h+="<tr><td class='l'>"+n+"<small>"+DATA[n].station+"</small></td>";
+  if(!valid(n)){h+="<td class='na' colspan='"+days.length+"'>缺测（-999），不参与统计</td></tr>";continue;}
+  DATA[n].days.forEach((r,i)=>{const l=lv(r.aqi);h+="<td class='c"+far(i)+"' style='background:"+l[3]+";color:"+l[4]+"' title='"+n+" "+lab(r.d)+"：AQI "+r.aqi+"，"+l[1]+"'>"+r.aqi+"<small>"+(r.prim.map(p=>PN[p]).join(",")||"—")+"</small></td>";});
+  h+="</tr>";}
+$("mx").innerHTML=h;
+$("lg").innerHTML=LV.map((l,i)=>"<span><i class='sw' style='background:"+l[3]+"'></i>"+l[1]+" "+(i?LV[i-1][0]+1:0)+"–"+l[0]+"</span>").join("");
+$("chips").innerHTML=LV.map((l,i)=>"<span class='chip' style='background:"+l[3]+";color:"+l[4]+"'>"+l[2]+"　RGB "+RGB[i]+"</span>").join("");
+// 统计
+const st=days.map((d,i)=>{const v=vn.map(n=>DATA[n].days[i].aqi).sort((a,b)=>a-b);const m=v.length%2?v[(v.length-1)/2]:Math.round((v[v.length/2-1]+v[v.length/2])/2);
+  const pc={};vn.forEach(n=>DATA[n].days[i].prim.forEach(p=>pc[p]=(pc[p]||0)+1));
+  return{d,min:v[0],max:v[v.length-1],med:m,prim:Object.entries(pc).sort((a,b)=>b[1]-a[1]).map(e=>PN[e[0]]).slice(0,2)}});
+// 图表二
+const W=880,H=300,L=46,R=124,T=28,B=48,ymax=100,last=days.length-1;
+const x=i=>L+(W-L-R)*i/last, y=v=>T+(H-T-B)*(1-v/ymax);
+let s="";
+[[0,50,LV[0]],[50,100,LV[1]]].forEach(b=>{s+="<rect x='"+L+"' y='"+y(b[1])+"' width='"+(W-L-R)+"' height='"+(y(b[0])-y(b[1]))+"' fill='"+b[2][3]+"' opacity='.07'/><text x='"+(L+8)+"' y='"+(y(b[1])+16)+"'>"+b[2][1]+"</text>";});
+[0,50,100].forEach(v=>{s+="<line x1='"+L+"' x2='"+(W-R)+"' y1='"+y(v)+"' y2='"+y(v)+"' stroke='var(--line2)'/><text x='"+(L-8)+"' y='"+(y(v)+4)+"' text-anchor='end'>"+v+"</text>";});
+s+="<text x='"+((L+W-R)/2)+"' y='"+(H-6)+"' text-anchor='middle'>日期（2026 年）</text><text x='"+(L-8)+"' y='12' text-anchor='end'>AQI</text>";
+days.forEach((d,i)=>{s+="<text x='"+x(i)+"' y='"+(H-B+17)+"' text-anchor='middle'>"+lab(d)+"</text>";});
+s+="<polygon points='"+st.map((r,i)=>x(i)+","+y(r.max)).concat(st.map((r,i)=>x(i)+","+y(r.min)).reverse()).join(" ")+"' fill='var(--accent)' opacity='.15'/>";
+vn.forEach(n=>{s+="<polyline fill='none' stroke='var(--ink3)' stroke-width='1' points='"+DATA[n].days.map((r,i)=>x(i)+","+y(r.aqi)).join(" ")+"'/>";});
+s+="<polyline fill='none' stroke='var(--accent)' stroke-width='2.5' stroke-linejoin='round' points='"+st.map((r,i)=>x(i)+","+y(r.med)).join(" ")+"'/>";
+st.forEach((r,i)=>{s+="<circle cx='"+x(i)+"' cy='"+y(r.med)+"' r='3.5' fill='var(--accent)' stroke='var(--surface)' stroke-width='2'/>";});
+const hi=vn.reduce((a,n)=>DATA[n].days[last].aqi>DATA[a].days[last].aqi?n:a,vn[0]);
+s+="<text x='"+(x(last)+10)+"' y='"+(y(DATA[hi].days[last].aqi)+4)+"'>"+hi+"</text>";
+s+="<text x='"+(x(last)+10)+"' y='"+(y(st[last].med)+4)+"' style='fill:var(--accent);font-weight:700'>中位数 "+st[last].med+"</text>";
+s+="<line id='cx' y1='"+T+"' y2='"+(H-B)+"' stroke='var(--ink2)' stroke-dasharray='3 3' visibility='hidden'/>";
+const ch=$("ch");ch.innerHTML=s;
+const tip=$("tip"),cx=$("cx");
+ch.addEventListener("mousemove",e=>{const b=ch.getBoundingClientRect();const px=(e.clientX-b.left)/b.width*W;let i=Math.round((px-L)/(W-L-R)*last);i=Math.max(0,Math.min(last,i));
+  cx.setAttribute("x1",x(i));cx.setAttribute("x2",x(i));cx.setAttribute("visibility","visible");
+  tip.innerHTML="<b>"+lab(days[i])+"</b>　中位数 "+st[i].med+"，范围 "+st[i].min+"–"+st[i].max+"<br>"+vn.map(n=>n+"：<b>"+DATA[n].days[i].aqi+"</b>").join("<br>");
+  tip.style.display="block";const tx=x(i)/W*b.width;tip.style.left=(tx>b.width*0.55?tx-tip.offsetWidth-12:tx+12)+"px";tip.style.top="10px";});
+ch.addEventListener("mouseleave",()=>{tip.style.display="none";cx.setAttribute("visibility","hidden");});
+// 图表三（省站版式，七日）
+const fr=st.slice(0,7).map(r=>{const lo=Math.max(0,r.med-10),hi=r.med+10;const a=lv(lo),b=lv(hi);return{d:r.d,lo,hi,a,b,ab:a===b?a[2]:a[2]+"-"+b[2],full:a===b?a[1]:a[2]+"至"+b[1],prim:hi>50&&r.prim.length?r.prim.join(","):"—"}});
+const N=["一","二","三","四","五","六","七"];
+$("fin").innerHTML="<tr><th rowspan='2'>区域</th><th>时间</th>"+fr.map((f,i)=>"<th colspan='3'>2026-"+f.d.slice(4,6)+"-"+f.d.slice(6,8)+"（第"+N[i]+"天）</th>").join("")+"</tr><tr><th>城市</th>"+fr.map(()=>"<th>AQI范围</th><th>级别</th><th>首污</th>").join("")+"</tr><tr><td class='l'>样例</td><td class='l'>样例站点</td>"+fr.map(f=>"<td>"+f.lo+"-"+f.hi+"</td><td class='lv' style='background:"+f.b[3]+";color:"+f.b[4]+"'>"+f.ab+"</td><td>"+f.prim+"</td>").join("")+"</tr>";
+// 图表〇 昨日回顾（真实数据）
+const REG=[["关中地区",["西安市","铜川市","宝鸡市","咸阳市","渭南市","杨凌","韩城"]],["陕北地区",["延安市","榆林市"]],["陕南地区",["汉中市","安康市","商洛市"]]];
+const by={};SX.forEach(r=>by[r.n]=r);
+let rv="<tr><th>区域</th><th>城市</th><th>PM2.5</th><th>PM10</th><th>NO2</th><th>O3-8h</th><th>AQI</th><th>级别</th><th>首污</th></tr>";
+const amax=Math.max(...SX.map(r=>r.aqi));
+REG.forEach(([g,cs])=>cs.forEach((c,i)=>{const r=by[c],l=lv(r.aqi);rv+="<tr>"+(i?"":"<td class='l' rowspan='"+cs.length+"'>"+g+"</td>")+"<td class='l'"+(r.aqi===amax?" style='font-weight:700'":"")+">"+c+"</td><td>"+r.pm25+"</td><td>"+r.pm10+"</td><td>"+r.no2+"</td><td>"+r.o3+"</td><td class='lv' style='background:"+l[3]+";color:"+l[4]+"'>"+r.aqi+"</td><td class='lv' style='background:"+l[3]+";color:"+l[4]+"'>"+l[1]+"</td><td>"+(r.p==="-"?"—":r.p)+"</td></tr>";}));
+$("rv").innerHTML=rv;
+const topc=SX.filter(r=>r.aqi===amax).map(r=>r.n).join("、"),amin=Math.min(...SX.map(r=>r.aqi));
+const regTxt=REG.map(([g,cs])=>{const ls=[...new Set(cs.map(c=>lv(by[c].aqi)[1]))];return g+"以"+ls.join("至")+"为主";}).join("；");
+const uni=new Set(SX.map(r=>lv(r.aqi)[1])).size===1;
+$("rvsay").innerHTML="<span class='lab'>昨日（10 月 21 日）我省空气质量回顾</span><p>昨日全省 "+SX.length+" 个城市（含杨凌、韩城）空气质量均为优，AQI 在 "+amin+" 至 "+amax+" 之间，"+topc+"相对较高。"+(uni?"":regTxt+"。")+"全省无首要污染物。</p>";
+// AI 结果与自动起草
+const big=st.filter(r=>r.max-r.min>50).map(r=>lab(r.d));
+const allmin=Math.min(...st.map(r=>r.min)),allmax=Math.max(...st.map(r=>r.max));
+const worst=st.reduce((a,r)=>r.max>a.max?r:a,st[0]);
+const seg=[];fr.forEach(f=>{const k=f.full+"|"+f.prim,l=seg[seg.length-1];if(l&&l.k===k)l.e=f.d;else seg.push({k,s:f.d,e:f.d,full:f.full,prim:f.prim});});
+const segtxt=seg.map(g=>"<p>"+(g.s===g.e?dd(g.s):(+g.s.slice(6,8))+"-"+dd(g.e))+"，<span class='slot'>扩散条件：待预报员填写</span>。空气质量以"+g.full+"为主"+(g.prim!=="—"?"；首要污染物主要为"+g.prim.replace(",","或")+"。":"。")+"</p>").join("");
+$("aiout").innerHTML="<span class='lab'>回顾</span><p>10 月 21 日全省 "+SX.length+" 个城市均为优，AQI "+amin+" 至 "+amax+"，"+topc+"最高，无首要污染物。</p><span class='lab'>缺测与分歧</span><p>"+names.filter(n=>!valid(n)).join("、")+" 整份缺测，已剔除，其余 "+vn.length+" 个模式参与统计。未来 10 天各模式 AQI 在 "+allmin+" 到 "+allmax+" 之间，全部为优或良，没有模式预报出污染日。AQI 超过 50 的日子首要污染物均为 PM10。"+hi+" 全程明显高于其他模式，"+(big.length?big.length+" 天里各模式最高与最低相差超过 50，":"")+"最高值出现在 "+lab(worst.d)+"（"+worst.max+"）。</p><span class='lab'>需要人工复核</span><p>两组文件来自不同站点，不宜直接比较；"+hi+" 的 PM10 偏高是否可信；数据中没有气象信息，扩散条件无法判断。</p>";
+$("draft").innerHTML="<span class='lab'>样例站点　未来七日空气质量预报结论（AI 初稿，待订正）</span>"+segtxt;
+$("cp").addEventListener("click",function(){navigator.clipboard.writeText($("prompt").textContent).then(()=>{this.textContent="已复制"},()=>{this.textContent="复制失败，请手动选中文本"});});
+</script>
+</body>
+</html>
